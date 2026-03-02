@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arabic Letters via Hebrew Cognates</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1208;
+      --parchment: #f4ead0;
+      --parchment-dark: #e8d9b0;
+      --accent: #8b3a1a;
+      --accent-light: #c25c2a;
+      --gold: #c8960c;
+      --gold-light: #e8b830;
+      --faded: #7a6a50;
+      --border: #c4a96a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--parchment);
+      background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(200, 150, 12, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(139, 58, 26, 0.05) 0%, transparent 60%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      color: var(--ink);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 3.5rem 2rem 2rem;
+      border-bottom: 2px solid var(--border);
+      position: relative;
+      background: linear-gradient(to bottom, rgba(200,150,12,0.08), transparent);
+    }
+
+    .ornament {
+      color: var(--gold);
+      font-size: 1.4rem;
+      letter-spacing: 0.5rem;
+      display: block;
+      margin-bottom: 0.5rem;
+      opacity: 0.7;
+    }
+
+    h1 {
+      font-family: 'IM Fell English', Georgia, serif;
+      font-size: 2.4rem;
+      color: var(--accent);
+      font-weight: normal;
+      line-height: 1.2;
+      margin-bottom: 0.3rem;
+    }
+
+    .subtitle {
+      font-family: 'Crimson Pro', serif;
+      font-style: italic;
+      color: var(--faded);
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+    }
+
+    .script-line {
+      font-size: 1.8rem;
+      letter-spacing: 0.3rem;
+      color: var(--accent-light);
+      opacity: 0.6;
+      margin-top: 0.5rem;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .intro-block {
+      background: rgba(255,255,255,0.35);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 6px 6px 0;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 2.5rem;
+      font-style: italic;
+      color: var(--faded);
+      font-size: 1rem;
+    }
+
+    .section-title {
+      font-family: 'IM Fell English', Georgia, serif;
+      font-size: 1.4rem;
+      color: var(--accent);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.4rem;
+      margin: 2.5rem 0 1.2rem;
+      font-weight: normal;
+    }
+
+    /* Cards */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.5);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem 1.3rem;
+      position: relative;
+      transition: box-shadow 0.2s, transform 0.2s;
+      animation: fadeIn 0.5s ease both;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 18px rgba(139,58,26,0.12);
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card:nth-child(n) { animation-delay: calc(var(--i, 0) * 0.04s); }
+
+    .card-number {
+      position: absolute;
+      top: 0.7rem;
+      right: 0.9rem;
+      font-size: 0.75rem;
+      color: var(--gold);
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+    }
+
+    .card-arabic {
+      font-size: 2.5rem;
+      line-height: 1.3;
+      text-align: center;
+      color: var(--ink);
+      margin-bottom: 0.3rem;
+      direction: rtl;
+    }
+
+    .card-translit {
+      text-align: center;
+      font-style: italic;
+      color: var(--faded);
+      font-size: 0.92rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-meaning {
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--accent);
+      margin-bottom: 0.7rem;
+    }
+
+    .card-divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 0.6rem 0;
+    }
+
+    .card-hebrew {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.95rem;
+      color: var(--faded);
+    }
+
+    .card-hebrew .heb-word {
+      font-size: 1.4rem;
+      direction: rtl;
+      color: var(--ink);
+    }
+
+    .card-letters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.7rem;
+    }
+
+    .letter-badge {
+      background: var(--parchment-dark);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.15rem 0.5rem;
+      font-size: 1.1rem;
+      color: var(--accent);
+      direction: rtl;
+    }
+
+    .letter-badge small {
+      font-size: 0.7rem;
+      color: var(--faded);
+      margin-left: 0.2rem;
+      font-style: italic;
+      direction: ltr;
+    }
+
+    /* Sound correspondence table */
+    .corr-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.97rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .corr-table th {
+      background: var(--parchment-dark);
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.8rem;
+      font-family: 'IM Fell English', serif;
+      font-weight: normal;
+      color: var(--accent);
+      text-align: left;
+    }
+
+    .corr-table td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.8rem;
+      vertical-align: top;
+    }
+
+    .corr-table tr:hover td {
+      background: rgba(255,255,255,0.4);
+    }
+
+    .big-ar { font-size: 1.6rem; direction: rtl; }
+    .big-he { font-size: 1.4rem; direction: rtl; }
+
+    /* Note box */
+    .note-box {
+      background: rgba(200,150,12,0.08);
+      border: 1px solid var(--gold);
+      border-radius: 6px;
+      padding: 1rem 1.3rem;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+
+    .note-box strong {
+      color: var(--accent);
+    }
+
+    /* Legend for new letters */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.88rem;
+      color: var(--faded);
+    }
+
+    footer {
+      text-align: center;
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      color: var(--faded);
+      font-style: italic;
+      font-size: 0.88rem;
+    }
+
+    /* Tooltip for new-letter highlight */
+    .new-letter {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="ornament">✦ ✦ ✦</span>
+  <h1>Arabic Letters via Hebrew Cognates</h1>
+  <p class="subtitle">A personal reference for learning Arabic script through familiar Semitic roots</p>
+  <div class="script-line">ب י ت &nbsp;·&nbsp; بَيْتٌ &nbsp;·&nbsp; בַּיִת</div>
+</header>
+
+<main>
+
+  <div class="intro-block">
+    Twenty Arabic words selected for their recognizability through Biblical Hebrew. Each word illustrates one or more new Arabic letters and reflects systematic sound correspondences between the two Semitic sister languages. The <span class="new-letter">highlighted letters</span> in each card are the ones introduced by that word.
+  </div>
+
+  <h2 class="section-title">The Twenty Words</h2>
+
+  <div class="cards-grid">
+
+    <!-- 1 -->
+    <div class="card" style="--i:1">
+      <span class="card-number">1</span>
+      <div class="card-arabic">بَيْتٌ</div>
+      <div class="card-translit">bayt</div>
+      <div class="card-meaning">house</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">בַּיִת</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ب<small>b</small></span>
+        <span class="letter-badge new-letter">ي<small>y</small></span>
+        <span class="letter-badge new-letter">ت<small>t</small></span>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="card" style="--i:2">
+      <span class="card-number">2</span>
+      <div class="card-arabic">كِتَابٌ</div>
+      <div class="card-translit">kitāb</div>
+      <div class="card-meaning">book / scripture</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew root:</span><span class="heb-word">כָּתַב</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ك<small>k</small></span>
+        <span class="letter-badge new-letter">ا<small>ā</small></span>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="card" style="--i:3">
+      <span class="card-number">3</span>
+      <div class="card-arabic">مَلِكٌ</div>
+      <div class="card-translit">malik</div>
+      <div class="card-meaning">king</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">מֶלֶךְ</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">م<small>m</small></span>
+        <span class="letter-badge new-letter">ل<small>l</small></span>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="card" style="--i:4">
+      <span class="card-number">4</span>
+      <div class="card-arabic">يَوْمٌ</div>
+      <div class="card-translit">yawm</div>
+      <div class="card-meaning">day</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">יוֹם</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">و<small>w/ū</small></span>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="card" style="--i:5">
+      <span class="card-number">5</span>
+      <div class="card-arabic">شَمْسٌ</div>
+      <div class="card-translit">shams</div>
+      <div class="card-meaning">sun</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">שֶׁמֶשׁ</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ش<small>sh</small></span>
+        <span class="letter-badge new-letter">س<small>s</small></span>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="card" style="--i:6">
+      <span class="card-number">6</span>
+      <div class="card-arabic">سَلَامٌ</div>
+      <div class="card-translit">salām</div>
+      <div class="card-meaning">peace</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">שָׁלוֹם</span></div>
+      <div class="card-letters">
+        <span class="letter-badge">س<small>s</small></span>
+        <span class="letter-badge">ل<small>l</small></span>
+        <span class="letter-badge">م<small>m</small></span>
+        <span style="font-size:0.8rem; color:var(--faded); align-self:center;">reinforces #3 &amp; #5</span>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="card" style="--i:7">
+      <span class="card-number">7</span>
+      <div class="card-arabic">نَبِيٌّ</div>
+      <div class="card-translit">nabiyy</div>
+      <div class="card-meaning">prophet</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">נָבִיא</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ن<small>n</small></span>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="card" style="--i:8">
+      <span class="card-number">8</span>
+      <div class="card-arabic">ذَهَبٌ</div>
+      <div class="card-translit">dhahab</div>
+      <div class="card-meaning">gold</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">זָהָב</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ذ<small>dh</small></span>
+        <span class="letter-badge new-letter">ه<small>h</small></span>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="card" style="--i:9">
+      <span class="card-number">9</span>
+      <div class="card-arabic">أَرْضٌ</div>
+      <div class="card-translit">arḍ</div>
+      <div class="card-meaning">earth, land</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">אֶרֶץ</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">أ<small>ʾa</small></span>
+        <span class="letter-badge new-letter">ر<small>r</small></span>
+        <span class="letter-badge new-letter">ض<small>ḍ</small></span>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="card" style="--i:10">
+      <span class="card-number">10</span>
+      <div class="card-arabic">عَيْنٌ</div>
+      <div class="card-translit">ʿayn</div>
+      <div class="card-meaning">eye</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">עַיִן</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ع<small>ʿ</small></span>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="card" style="--i:11">
+      <span class="card-number">11</span>
+      <div class="card-arabic">قُدُّوسٌ</div>
+      <div class="card-translit">quddūs</div>
+      <div class="card-meaning">the Holy One</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">קָדוֹשׁ</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ق<small>q</small></span>
+        <span class="letter-badge new-letter">د<small>d</small></span>
+      </div>
+    </div>
+
+    <!-- 12 -->
+    <div class="card" style="--i:12">
+      <span class="card-number">12</span>
+      <div class="card-arabic">حَيَاةٌ</div>
+      <div class="card-translit">ḥayāh</div>
+      <div class="card-meaning">life</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">חַיִּים</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ح<small>ḥ</small></span>
+        <span class="letter-badge new-letter">ة<small>-a(h)</small></span>
+      </div>
+    </div>
+
+    <!-- 13 -->
+    <div class="card" style="--i:13">
+      <span class="card-number">13</span>
+      <div class="card-arabic">زَيْتٌ</div>
+      <div class="card-translit">zayt</div>
+      <div class="card-meaning">olive oil</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">זַיִת</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ز<small>z</small></span>
+      </div>
+    </div>
+
+    <!-- 14 -->
+    <div class="card" style="--i:14">
+      <span class="card-number">14</span>
+      <div class="card-arabic">فَمٌ</div>
+      <div class="card-translit">fam</div>
+      <div class="card-meaning">mouth</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">פֶּה</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ف<small>f</small></span>
+      </div>
+    </div>
+
+    <!-- 15 -->
+    <div class="card" style="--i:15">
+      <span class="card-number">15</span>
+      <div class="card-arabic">جَبَلٌ</div>
+      <div class="card-translit">jabal</div>
+      <div class="card-meaning">mountain</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew (approx.):</span><span class="heb-word">גָּבֹהַּ</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ج<small>j</small></span>
+      </div>
+    </div>
+
+    <!-- 16 -->
+    <div class="card" style="--i:16">
+      <span class="card-number">16</span>
+      <div class="card-arabic">ثَلَاثَةٌ</div>
+      <div class="card-translit">thalātha</div>
+      <div class="card-meaning">three</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">שָׁלֹשׁ</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ث<small>th</small></span>
+      </div>
+    </div>
+
+    <!-- 17 -->
+    <div class="card" style="--i:17">
+      <span class="card-number">17</span>
+      <div class="card-arabic">طَيِّبٌ</div>
+      <div class="card-translit">ṭayyib</div>
+      <div class="card-meaning">good, pleasant</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">טוֹב</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ط<small>ṭ</small></span>
+      </div>
+    </div>
+
+    <!-- 18 -->
+    <div class="card" style="--i:18">
+      <span class="card-number">18</span>
+      <div class="card-arabic">خَاتَمٌ</div>
+      <div class="card-translit">khātam</div>
+      <div class="card-meaning">seal, signet ring</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">חוֹתָם</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">خ<small>kh</small></span>
+      </div>
+    </div>
+
+    <!-- 19 -->
+    <div class="card" style="--i:19">
+      <span class="card-number">19</span>
+      <div class="card-arabic">ظِلٌّ</div>
+      <div class="card-translit">ẓill</div>
+      <div class="card-meaning">shadow</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">צֵל</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ظ<small>ẓ</small></span>
+      </div>
+    </div>
+
+    <!-- 20 -->
+    <div class="card" style="--i:20">
+      <span class="card-number">20</span>
+      <div class="card-arabic">صَادِقٌ</div>
+      <div class="card-translit">ṣādiq</div>
+      <div class="card-meaning">righteous, truthful</div>
+      <hr class="card-divider">
+      <div class="card-hebrew"><span>Hebrew:</span><span class="heb-word">צַדִּיק</span></div>
+      <div class="card-letters">
+        <span class="letter-badge new-letter">ص<small>ṣ</small></span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BONUS -->
+  <div class="note-box">
+    <strong>Bonus — the missing letter: غ (ghayn)</strong><br>
+    The one letter without a clean beginner cognate. It is the voiced counterpart of خ, and sometimes corresponds to Hebrew ע.
+    Example: <span style="font-size:1.3rem; direction:rtl;">مَغْرِبٌ</span> <em>(maghrib)</em> — west, sunset
+    ↔ Hebrew <span style="font-size:1.2rem; direction:rtl;">מַעֲרָב</span> <em>(maʿarāv)</em>.
+    You will meet مَغْرِبٌ early in Quranic reading.
+  </div>
+
+  <!-- SOUND CORRESPONDENCES -->
+  <h2 class="section-title">Key Sound Correspondences</h2>
+
+  <table class="corr-table">
+    <thead>
+      <tr>
+        <th>Hebrew</th>
+        <th>Arabic</th>
+        <th>Rule</th>
+        <th>Example pair</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="big-he">שׁ</span></td>
+        <td><span class="big-ar">ش</span></td>
+        <td>שׁ → ش (when pronounced <em>sh</em>)</td>
+        <td>שֶׁמֶשׁ → شَمْسٌ</td>
+      </tr>
+      <tr>
+        <td><span class="big-he">שׂ / שׁ</span></td>
+        <td><span class="big-ar">س</span></td>
+        <td>Hebrew collapsed שׂ and שׁ; Arabic preserves the <em>s</em> sound separately</td>
+        <td>שָׁלוֹם → سَلَامٌ</td>
+      </tr>
+      <tr>
+        <td><span class="big-he">ז</span></td>
+        <td><span class="big-ar">ذ</span></td>
+        <td>Voiced dental — Heb. <em>z</em> ↔ Ar. <em>dh</em></td>
+        <td>זָהָב → ذَهَبٌ</td>
+      </tr>
+      <tr>
+        <td><span class="big-he">ט</span></td>
+        <td><span class="big-ar">ط</span></td>
+        <td>Emphatic <em>t</em> — clean direct match</td>
+        <td>טוֹב → طَيِّبٌ</td>
+      </tr>
+      <tr>
+        <td><span class="big-he">צ</span></td>
+        <td><span class="big-ar">ص / ض / ظ</span></td>
+        <td>Hebrew צ corresponds to <em>three</em> Arabic emphatics. Arabic preserved the distinctions Hebrew merged.</td>
+        <td>צַדִּיק → صَادِقٌ<br>אֶרֶץ → أَرْضٌ<br>צֵל → ظِلٌّ</td>
+      </tr>
+      <tr>
+        <td><span class="big-he">ע</span></td>
+        <td><span class="big-ar">ع / غ</span></td>
+        <td>Arabic split ע into two letters</td>
+        <td>עַיִן → عَيْنٌ<br>מַעֲרָב → مَغْرِبٌ</td>
+      </tr>
+      <tr>
+        <td><span class="big-he">כ (fricative)</span></td>
+        <td><span class="big-ar">خ</span></td>
+        <td>Velar fricative — like German <em>ch</em> in <em>Bach</em></td>
+        <td>חוֹתָם → خَاتَمٌ</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- STUDY ORDER -->
+  <h2 class="section-title">Suggested Study Order</h2>
+  <div class="note-box" style="font-style:normal;">
+    <strong>Week 1 — Near-identical:</strong>
+    بَيْتٌ · يَوْمٌ · عَيْنٌ · مَلِكٌ · نَبِيٌّ · سَلَامٌ
+    <br><br>
+    <strong>Week 2 — Sound-shift words:</strong>
+    شَمْسٌ · ذَهَبٌ · كِتَابٌ · زَيْتٌ · فَمٌ · حَيَاةٌ
+    <br><br>
+    <strong>Week 3 — The emphatics cluster:</strong>
+    أَرْضٌ · ظِلٌّ · صَادِقٌ · طَيِّبٌ · قُدُّوسٌ
+    <br><br>
+    <strong>Week 4 — Remaining &amp; review:</strong>
+    جَبَلٌ · ثَلَاثَةٌ · خَاتَمٌ · مَغْرِبٌ (غ bonus)
+  </div>
+
+</main>
+
+  <!-- TASHKIL -->
+  <h2 class="section-title">Tashkīl — The Diacritical Marks (تَشْكِيل)</h2>
+
+  <div class="intro-block">
+    Tashkīl marks are the small signs written above or below Arabic letters to indicate short vowels, doubled consonants, and the absence of a vowel. The Quran is always printed fully vowelled — so reading with tashkīl is the norm, not the exception. These marks have rough parallels in Hebrew niqqudot.
+  </div>
+
+  <table class="corr-table">
+    <thead>
+      <tr>
+        <th>Mark</th>
+        <th>Name</th>
+        <th>Meaning</th>
+        <th>Example</th>
+        <th>Hebrew parallel</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:center; font-size:1.9rem;">بَ</td>
+        <td>فَتْحَة <em>(fatḥa)</em></td>
+        <td>Short <strong>a</strong> — a small diagonal stroke above the letter</td>
+        <td><span style="font-size:1.3rem;">بَيْتٌ</span> <em>bayt</em></td>
+        <td>פַּתַח — same name, same sound, same position above the letter</td>
+      </tr>
+      <tr>
+        <td style="text-align:center; font-size:1.9rem;">بِ</td>
+        <td>كَسْرَة <em>(kasra)</em></td>
+        <td>Short <strong>i</strong> — a small stroke <em>below</em> the letter</td>
+        <td><span style="font-size:1.3rem;">كِتَابٌ</span> <em>kitāb</em></td>
+        <td>חִירִיק — same short <em>i</em> sound; Hebrew places it below as well</td>
+      </tr>
+      <tr>
+        <td style="text-align:center; font-size:1.9rem;">بُ</td>
+        <td>ضَمَّة <em>(ḍamma)</em></td>
+        <td>Short <strong>u</strong> — a small waw-shaped curl above the letter</td>
+        <td><span style="font-size:1.3rem;">قُدُّوسٌ</span> <em>quddūs</em></td>
+        <td>קִבּוּץ / שׁוּרֵק — Hebrew's short and long <em>u</em> vowels</td>
+      </tr>
+      <tr>
+        <td style="text-align:center; font-size:1.9rem;">بْ</td>
+        <td>سُكُون <em>(sukūn)</em></td>
+        <td>No vowel — a small circle above the letter, indicating a "closed" consonant with no following vowel</td>
+        <td><span style="font-size:1.3rem;">يَوْمٌ</span> <em>yawm</em> — the و carries sukūn</td>
+        <td>שְׁוָא נָח (silent shewa) — marks a consonant with no vowel or a reduced one</td>
+      </tr>
+      <tr>
+        <td style="text-align:center; font-size:1.9rem;">بّ</td>
+        <td>شَدَّة <em>(shadda)</em></td>
+        <td>Doubled consonant — a small ش-shaped sign above the letter. The consonant is held twice as long.</td>
+        <td><span style="font-size:1.3rem;">نَبِيٌّ</span> <em>nabiyy</em> — the ي is doubled</td>
+        <td>דָּגֵשׁ חָזָק — dagesh forte doubles the consonant in exactly the same way</td>
+      </tr>
+      <tr>
+        <td style="text-align:center; font-size:1.9rem;">بً</td>
+        <td>تَنْوِين فَتْح <em>(tanwīn fatḥ)</em></td>
+        <td><strong>-an</strong> ending — double fatḥa; marks indefinite accusative or common noun endings in citation form</td>
+        <td><span style="font-size:1.3rem;">بَيْتًا</span> <em>baytan</em></td>
+        <td>No direct parallel; Hebrew indefiniteness is unmarked, but the <em>-n</em> echo is a Semitic feature seen in some archaic Hebrew forms</td>
+      </tr>
+      <tr>
+        <td style="text-align:center; font-size:1.9rem;">بٍ</td>
+        <td>تَنْوِين كَسْر <em>(tanwīn kasr)</em></td>
+        <td><strong>-in</strong> ending — double kasra; indefinite genitive</td>
+        <td><span style="font-size:1.3rem;">مَلِكٍ</span> <em>malikin</em></td>
+        <td rowspan="2" style="vertical-align:middle; color:var(--faded); font-style:italic;">The three tanwīn forms together mark grammatical case on indefinite nouns — Arabic kept the case system Hebrew lost.</td>
+      </tr>
+      <tr>
+        <td style="text-align:center; font-size:1.9rem;">بٌ</td>
+        <td>تَنْوِين ضَمّ <em>(tanwīn ḍamm)</em></td>
+        <td><strong>-un</strong> ending — double ḍamma; indefinite nominative. This is the citation form used in dictionaries.</td>
+        <td><span style="font-size:1.3rem;">مَلِكٌ</span> <em>malikun</em></td>
+      </tr>
+      <tr>
+        <td style="text-align:center; font-size:1.9rem;">آ</td>
+        <td>مَدَّة <em>(madda)</em></td>
+        <td>Long <strong>ā</strong> over alif — a small tilde-like stroke (~) written over ا when it follows a hamza. Represents a lengthened <em>a</em>.</td>
+        <td><span style="font-size:1.3rem;">قُرْآنٌ</span> <em>Qurʾān</em></td>
+        <td>קָמָץ / צֵרֵי — long vowels marked above; the lengthening principle is the same</td>
+      </tr>
+      <tr>
+        <td style="text-align:center; font-size:1.9rem;">أ / إ / ئ / ؤ</td>
+        <td>هَمْزَة <em>(hamza)</em></td>
+        <td>The glottal stop — same sound as Hebrew אָ. Written above alif, below alif, above waw, or above ya (without dots), depending on surrounding vowels.</td>
+        <td><span style="font-size:1.3rem;">أَرْضٌ</span> <em>arḍ</em></td>
+        <td>אָלֶף — same glottal stop consonant. Arabic makes its position explicit with the hamza sign; Hebrew uses alef as a silent letter or vowel seat.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note-box">
+    <strong>The tanwīn in the word cards above:</strong> All 20 words are given in their dictionary citation form, which ends in <span style="font-size:1.1rem;">ـٌ</span> (tanwīn ḍamm = <em>-un</em>). This is the indefinite nominative — the form you will see in glossaries. When you read the Quran in context, the ending will vary or drop entirely. Don't let it confuse you — the root and the core consonants are what matter.
+  </div>
+
+<footer>
+  Based on: <em>Arabic Through the Quran</em> by Alan Jones &amp; <em>Introducing Biblical Hebrew</em> by Allen P. Ross.<br>
+  Personal study reference — Semitic language cognates for letter recognition.
+</footer>
+
+</body>
+</html>
